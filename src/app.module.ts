@@ -6,9 +6,10 @@ import config from 'ormconfig';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CartModule } from './cart/cart.module';
 import { CourseModule } from './course/course.module';
+import { BookStoreModule } from './book-store/book-store.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config),CategoryModule, CartModule, CourseModule, ],
+  imports: [TypeOrmModule.forRoot(config),CategoryModule, CartModule, CourseModule, BookStoreModule, ],
   controllers: [AppController],
   providers: [AppService],
 })

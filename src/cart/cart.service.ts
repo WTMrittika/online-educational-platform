@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Cart } from 'src/entities/cart.entity';
 
 @Injectable()
 export class CartService {
-  create(createCartDto: CreateCartDto) {
-    return 'This action adds a new cart';
+  constructor(
+    @InjectRepository(Cart) private readonly cartRepo: Repository<Cart>,
+  ) {}
+  async create(createCartDto: CreateCartDto) {
+    const cart = this.cartRepo.create(createCartDto);
+    return await this.cartRepo.save(cart);
   }
 
-  findAll() {
-    return `This action returns all cart`;
+  async findAll() {
+    return await this.cartRepo.find({});
+    
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} cart`;
+  async findOne(course_id: number) {
+    const cartItem = await this.cartRepo.findOne({ where: { course_id: course_id } });
+    if (!cartItem) {
+      throw new NotFoundException('Course not found in cart');
+    }
+    return cartItem;
+  }
+  
+  async update(course_id: number, updateCartDto: UpdateCartDto): Promise<void> {
+    const itemInCart = await this.cartRepo.findOne({ where: { course_id: course_id } });
+  
+    if (!itemInCart) {
+      throw new NotFoundException('Category not found'); 
+    }
+    await this.cartRepo.update(itemInCart.id, updateCartDto);
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async remove(course_id: number) {
+    const courseToDelete = await this.cartRepo.findOneBy({
+      course_id: course_id,
+    });
+    if (!courseToDelete) {
+      throw new NotFoundException('Sorry, the course was not found');
+    }
+    await this.cartRepo.remove(courseToDelete);
   }
 }

@@ -4,6 +4,8 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from 'src/entities/category.entity';
+import { Course } from 'src/entities/course.entity';
+
 
 @Injectable()
 export class CategoryService {
@@ -17,16 +19,28 @@ export class CategoryService {
   }
 
   async findAll() {
-    return await this.categoryRepo.find({});
+    return await this.categoryRepo.find({ relations: ['courses'] });
   }
 
-  async findOneByName(category_name: string): Promise<Category | string> {
-    const category = await this.categoryRepo.findOne({ where: { category_name: category_name } });
+  async findOne(id: number) {
+    const category = await this.categoryRepo.find({
+      where: { id },
+      relations: ['courses', 'carts'],
+    });
     if (!category) {
-      return 'Category not found';
+      throw new NotFoundException('Sorry, the category was not found');
     }
-    else
     return category;
+  }
+
+  async findAllCoursesByCategoryName(category_name: string): Promise<Course[]> {
+    const category = await this.categoryRepo.findOne({ where: { category_name: category_name }, relations: ['courses'] });
+
+    if (!category) {
+      throw new NotFoundException('Category not found');
+    }
+
+    return category.courses;
   }
 
   async update(categoryName: string, updateCategoryDto: UpdateCategoryDto): Promise<void> {
@@ -38,7 +52,14 @@ export class CategoryService {
     await this.categoryRepo.update(category.id, updateCategoryDto);
   }
   
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  //not working
+  async remove(id: number) {
+    const categoryToDelete = await this.categoryRepo.findOneBy({
+      id: id,
+    });
+    if (!categoryToDelete) {
+      throw new NotFoundException('Sorry, the course was not found');
+    }
+    await this.categoryRepo.remove(categoryToDelete);
   }
 }

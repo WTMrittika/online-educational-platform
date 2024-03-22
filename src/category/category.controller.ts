@@ -17,24 +17,22 @@ export class CategoryController {
     return this.categoryService.findAll();
   }
 
-  @Get(':categoryName')
-  findOneByName(@Param('categoryName') categoryName: string) {
-  return this.categoryService.findOneByName(categoryName);
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.categoryService.findOne(+id);
   }
 
-  @Patch(':categoryName') 
-async update(
-  @Param('categoryName') categoryName: string,
-  @Body() updateCategoryDto: UpdateCategoryDto,
-) {
+  @Patch(':categoryName')
+  async update(@Param('categoryName') categoryName: string, @Body() updateCategoryDto: UpdateCategoryDto) {
+
   await this.categoryService.update(categoryName, updateCategoryDto);
   return { message: 'The category updated successfully' };
-}
+  }
 
-
-
+  //not working
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    await this.categoryService.remove(id);
+    return { message: 'The category has been removed.' };
   }
 }

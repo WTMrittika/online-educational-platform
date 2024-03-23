@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseInterceptors, UploadedFile, Res, StreamableFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, UseInterceptors, UploadedFile, Res, StreamableFile, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { BookStoreService } from './book-store.service';
 import { CreateBookStoreDto } from './dto/create-book-store.dto';
 import { UpdateBookStoreDto } from './dto/update-book-store.dto';
@@ -7,12 +7,14 @@ import { MulterError, diskStorage } from 'multer';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import type { Response } from 'express';
+import { AdminGuard } from 'src/auth/admin.guard';
 
 @Controller('book-store')
 export class BookStoreController {
   constructor(private readonly bookStoreService: BookStoreService) {}
 
   @Post('create')
+  //@UseGuards(AdminGuard)
   async create(@Body(ValidationPipe) createBookStoreDto: CreateBookStoreDto) {
     return this.bookStoreService.create(createBookStoreDto);    
   }
@@ -51,9 +53,9 @@ export class BookStoreController {
     return this.bookStoreService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookStoreService.findOne(+id);
+  @Get(':course_id')
+  findOneByName(@Param('course_id', ParseIntPipe) course_id: number) {
+    return this.bookStoreService.findOneByName(course_id);
   }
 
   @Patch(':id')

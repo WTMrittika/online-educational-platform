@@ -32,7 +32,7 @@ export class BookStoreService {
       mkdirSync(downloadsFolderPath);
     }
 
-    const sourceFilePath = join(uploadsFolderPath, 'profilePic', filename);
+    const sourceFilePath = join(uploadsFolderPath, filename);
     const destinationFilePath = join(downloadsFolderPath, filename);
     const fileStream = createReadStream(sourceFilePath);
 
@@ -45,8 +45,12 @@ export class BookStoreService {
     fileStream.pipe(res);
   }
   
-  findOne(id: number) {
-    return `This action returns a #${id} bookStore`;
+  async findOneByName(course_id: number): Promise<BookStore> {
+    const course = await this.bookStoreRepo.findOne({ where: { id: course_id } });
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+    return course;
   }
 
   async update(id: number, updateBookStoreDto: UpdateBookStoreDto): Promise<void> {

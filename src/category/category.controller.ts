@@ -25,6 +25,7 @@ export class CategoryController {
   }
 
   @Patch(':categoryName')
+  @UseGuards(AdminGuard)
   async update(@Param('categoryName') categoryName: string, @Body() updateCategoryDto: UpdateCategoryDto) {
 
   await this.categoryService.update(categoryName, updateCategoryDto);

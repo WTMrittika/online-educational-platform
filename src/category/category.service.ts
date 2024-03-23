@@ -25,7 +25,7 @@ export class CategoryService {
   async findOne(id: number) {
     const category = await this.categoryRepo.find({
       where: { id },
-      relations: ['courses', 'carts'],
+      relations: ['courses'],
     });
     if (!category) {
       throw new NotFoundException('Sorry, the category was not found');

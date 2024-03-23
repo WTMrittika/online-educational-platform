@@ -10,6 +10,9 @@ export class Cart {
   @Column({ unique: true, nullable: false })
   course_id: number;
 
+  @Column({nullable: false})
+  categoryId: number;
+
   @Column({ nullable: false })
   no_of_items: number;
   
@@ -19,7 +22,7 @@ export class Cart {
   @Column({ nullable: false })
   created_by: string;
 
-  @ManyToOne(() => Category, (category) => category.carts)
-  category: Category;
+  // @ManyToOne(() => Category, (category) => category.carts)
+  // category: Category;
 
 }

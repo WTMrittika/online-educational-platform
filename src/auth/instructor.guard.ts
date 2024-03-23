@@ -2,7 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class InstructorGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const userRole = request.userRole;
@@ -12,8 +12,8 @@ export class AdminGuard implements CanActivate {
       return false;
     }
 
-    if (userRole !== 'admin') {
-      console.log("User is not an admin. Role:", userRole);
+    if (userRole !== 'Instructor') {
+      console.log("User is not an instructor. Role:", userRole);
       return false;
     }
 

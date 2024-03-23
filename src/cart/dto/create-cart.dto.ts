@@ -17,6 +17,7 @@ export class CreateCartDto {
   @IsNotEmpty()
   created_by: string;
 
+  @IsNumber( {}, {message: 'valid category id is required'} )
   @IsNotEmpty()
   categoryId: number;
 }

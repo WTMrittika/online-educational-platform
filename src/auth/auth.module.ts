@@ -13,6 +13,7 @@ import { User } from 'src/entities/user.entity';
   signOptions: { expiresIn: '1h' },
 })],
   controllers: [AuthController],
-  providers: [AuthService, UsersService, ],
+  providers: [AuthService, UsersService,],
+  exports: [AuthService]
 })
 export class AuthModule {}

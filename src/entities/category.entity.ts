@@ -22,9 +22,9 @@ import { Cart } from './cart.entity';
     })
     courses: Course[];
 
-    @OneToMany(() => Cart, (cart) => cart.category, {
-      cascade: true,
-    })
-    carts: Cart[];
+    // @OneToMany(() => Cart, (cart) => cart.category, {
+    //   cascade: true,
+    // })
+    // carts: Cart[];
   }
   

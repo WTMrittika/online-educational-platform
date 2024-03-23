@@ -24,19 +24,21 @@ async login(user: any){
     uemail:user.uemail,
     username:user.username,
     email:user.email,
-    //role: user.role
+    role: user.role
   };
+
+  console.log(payload);
   const accessToken = this.jwtService.sign(payload);
   return{
     accessToken,
-    username:user.username,
-    email:user.email
+    email:user.email,
+    message: 'Login successful'
   };
 }
-  async decodeToken(token: string): Promise<{ uname: string, uemail: string, username: string, email: string,  } | null> {
+  async decodeToken(token: string): Promise<{ uname: string, uemail: string, username: string, email: string, role: string } | null> {
   try {
     const payload = this.jwtService.verify(token); 
-    return { uname:payload.uname, uemail:payload.uemail, username:payload.username, email:payload.email, }; 
+    return { uname:payload.uname, uemail:payload.uemail, username:payload.username, email:payload.email, role: payload.role }; 
   } catch (error) {
     return null; 
   }

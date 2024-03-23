@@ -8,9 +8,11 @@ import { CartModule } from './cart/cart.module';
 import { CourseModule } from './course/course.module';
 import { BookStoreModule } from './book-store/book-store.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config),CategoryModule, CartModule, CourseModule, BookStoreModule, UsersModule, ],
+  imports: [TypeOrmModule.forRoot(config),CategoryModule, CartModule, CourseModule, BookStoreModule, UsersModule, AuthModule, ProfileModule, ],
   controllers: [AppController],
   providers: [AppService],
 })

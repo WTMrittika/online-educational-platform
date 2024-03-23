@@ -17,6 +17,6 @@ export class CreateCartDto {
   @IsNotEmpty()
   created_by: string;
 
-  // @IsNotEmpty()
-  // categoryId: number;
+  @IsNotEmpty()
+  categoryId: number;
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
@@ -22,9 +22,8 @@ export class CourseController {
     return this.courseService.findOneByName(course_id);
   }
 
-  @Patch(':course_id') 
+  @Patch(':course_id')
   async update(@Param('course_id', ParseIntPipe) course_id: number, @Body() updateCourseDto: UpdateCourseDto) {
-
     await this.courseService.update(course_id, updateCourseDto);
     return { message: 'The course updated successfully' };
   }

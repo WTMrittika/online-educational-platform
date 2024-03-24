@@ -4,6 +4,7 @@ import { Category} from './src/entities/category.entity';
 import { Course } from 'src/entities/course.entity';
 import { BookStore } from 'src/entities/book-store.entity';
 import { User } from 'src/entities/user.entity';
+import { LandingPage } from 'src/entities/landing-page.entity';
 
 const config: PostgresConnectionOptions = {
   type: 'postgres',
@@ -12,7 +13,7 @@ const config: PostgresConnectionOptions = {
   port: 5432,
   username: 'postgres',
   password: 'mrittika',
-  entities: [Category, Cart, Course, BookStore, User],
+  entities: [Category, Cart, Course, BookStore, User, LandingPage],
   synchronize: true,
 };
 

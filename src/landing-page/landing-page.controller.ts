@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ValidationPipe, ParseIntPipe } from '@nestjs/common';
 import { LandingPageService } from './landing-page.service';
 import { CreateLandingPageDto } from './dto/create-landing-page.dto';
 import { UpdateLandingPageDto } from './dto/update-landing-page.dto';
@@ -8,7 +8,7 @@ export class LandingPageController {
   constructor(private readonly landingPageService: LandingPageService) {}
 
   @Post()
-  create(@Body() createLandingPageDto: CreateLandingPageDto) {
+  create(@Body(ValidationPipe) createLandingPageDto: CreateLandingPageDto) {
     return this.landingPageService.create(createLandingPageDto);
   }
 
@@ -18,13 +18,14 @@ export class LandingPageController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.landingPageService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.landingPageService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLandingPageDto: UpdateLandingPageDto) {
-    return this.landingPageService.update(+id, updateLandingPageDto);
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateLandingDto: UpdateLandingPageDto) {
+    await this.landingPageService.update(id, updateLandingDto);
+    return { message: 'The landing page information has been updated successfully' };
   }
 
   @Delete(':id')
